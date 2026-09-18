@@ -128,9 +128,9 @@ export default function GridWiseDashboard() {
       : "—";
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-200 font-sans">
+    <div className="dashboard-shell min-h-screen bg-slate-900 text-slate-200 font-sans">
       {/* Header */}
-      <header className="flex items-center justify-between border-b border-slate-800 bg-slate-900 px-6 py-3">
+      <header className="dashboard-header flex items-center justify-between border-b border-slate-800 bg-slate-900 px-6 py-3">
         <div className="flex items-center gap-3">
           <h1 className="text-lg font-bold tracking-tight text-white">
             GridWise
@@ -141,7 +141,7 @@ export default function GridWiseDashboard() {
         </div>
         <div className="flex items-center gap-2 text-xs text-slate-400">
           <span
-            className={`h-2.5 w-2.5 rounded-full ${
+            className={`status-dot h-2.5 w-2.5 rounded-full ${
               health.status === "ok"
                 ? "bg-emerald-500"
                 : health.status === "bad"
@@ -158,9 +158,9 @@ export default function GridWiseDashboard() {
       </header>
 
       {/* Main Grid Layout */}
-      <main className="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-12 gap-6 p-6">
+      <main className="dashboard-main mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-12 gap-6 p-6">
         {/* Left Column: Request Controls & Textarea */}
-        <section className="lg:col-span-5 flex flex-col gap-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
+        <section className="dashboard-panel lg:col-span-5 flex flex-col gap-3 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             Request
           </h2>
@@ -169,7 +169,7 @@ export default function GridWiseDashboard() {
             <select
               value={selectedSample}
               onChange={handleSampleChange}
-              className="rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-400"
+              className="control rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-400"
             >
               <option value="">— load sample —</option>
               {Object.keys(samples).map((id) => (
@@ -182,7 +182,7 @@ export default function GridWiseDashboard() {
             <button
               onClick={handleRun}
               disabled={loading}
-              className="flex items-center gap-1.5 rounded-lg bg-sky-400 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-sky-300 disabled:opacity-50 cursor-pointer"
+              className="control flex items-center gap-1.5 rounded-lg bg-sky-400 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-sky-300 disabled:opacity-50 cursor-pointer"
             >
               {loading ? (
                 <RefreshCw className="h-3.5 w-3.5 animate-spin" />
@@ -194,7 +194,7 @@ export default function GridWiseDashboard() {
 
             <button
               onClick={handleFormat}
-              className="flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-xs text-slate-300 hover:border-slate-500 cursor-pointer"
+              className="control flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-1.5 text-xs text-slate-300 hover:border-slate-500 cursor-pointer"
             >
               <Code2 className="h-3.5 w-3.5" />
               Format
@@ -202,7 +202,7 @@ export default function GridWiseDashboard() {
 
             <button
               onClick={handleClear}
-              className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer"
+              className="control flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs text-slate-400 hover:text-slate-200 cursor-pointer"
             >
               <Trash2 className="h-3.5 w-3.5" />
               Clear
@@ -214,7 +214,7 @@ export default function GridWiseDashboard() {
             onChange={(e) => setJsonInput(e.target.value)}
             spellCheck="false"
             placeholder='{"scenario_id":"...","operator_notes":[...],"hours":[...],"battery":{...}}'
-            className="h-128 w-full rounded-lg border border-slate-800 bg-slate-950 p-3 font-mono text-xs leading-relaxed text-slate-300 focus:border-sky-400 focus:outline-none resize-y"
+            className="json-editor h-128 w-full rounded-lg border border-slate-800 bg-slate-950 p-3 font-mono text-xs leading-relaxed text-slate-300 focus:border-sky-400 focus:outline-none resize-y"
           />
 
           <p className="text-[11px] text-slate-500">
@@ -226,14 +226,14 @@ export default function GridWiseDashboard() {
         </section>
 
         {/* Right Column: Output Metrics & Tables */}
-        <section className="lg:col-span-7 flex flex-col gap-4 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
+        <section className="dashboard-panel dashboard-panel--response lg:col-span-7 flex flex-col gap-4 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400">
             Response
           </h2>
 
           {/* Error Banner */}
           {error && (
-            <div className="flex items-start gap-2 rounded-lg border border-rose-900/50 bg-rose-950/40 p-3 font-mono text-xs text-rose-300">
+            <div className="notice notice--error flex items-start gap-2 rounded-lg border border-rose-900/50 bg-rose-950/40 p-3 font-mono text-xs text-rose-300">
               <AlertCircle className="h-4 w-4 shrink-0 text-rose-400 mt-0.5" />
               <pre className="whitespace-pre-wrap">{error}</pre>
             </div>
@@ -241,9 +241,9 @@ export default function GridWiseDashboard() {
 
           {/* Output Dashboard */}
           {response && (
-            <div className="space-y-4">
+            <div className="response-content space-y-4">
               {/* Stats Panel */}
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+              <div className="stats-grid grid grid-cols-2 sm:grid-cols-5 gap-2">
                 <StatCard
                   label="Scenario"
                   value={response.scenario_id || "—"}
@@ -370,7 +370,7 @@ export default function GridWiseDashboard() {
 
               {/* Summary Banner */}
               {response.plan_summary && (
-                <div className="rounded-lg border border-slate-800 bg-slate-800/40 p-3 text-xs text-slate-300">
+                <div className="notice notice--summary rounded-lg border border-slate-800 bg-slate-800/40 p-3 text-xs text-slate-300">
                   <strong className="text-slate-100">Summary: </strong>
                   {response.plan_summary}
                 </div>
@@ -380,7 +380,7 @@ export default function GridWiseDashboard() {
 
           {/* Empty Placeholder */}
           {!response && !error && (
-            <div className="flex flex-col items-center justify-center h-64 text-slate-500 text-xs text-center border border-dashed border-slate-800 rounded-lg">
+            <div className="empty-state flex flex-col items-center justify-center h-64 text-slate-500 text-xs text-center border border-dashed border-slate-800 rounded-lg">
               <Code2 className="h-8 w-8 mb-2 opacity-50" />
               Load a sample or paste a scenario JSON payload, then click{" "}
               <strong>Run</strong>.
@@ -395,7 +395,7 @@ export default function GridWiseDashboard() {
 // Subcomponent for Metric Cards
 function StatCard({ label, value, unit }) {
   return (
-    <div className="rounded-lg border border-slate-800 bg-slate-800/50 p-2.5">
+    <div className="stat-card rounded-lg border border-slate-800 bg-slate-800/50 p-2.5">
       <div className="text-[10px] font-medium uppercase text-slate-400 tracking-wider">
         {label}
       </div>

@@ -1,1 +1,136 @@
 @import "tailwindcss";
+
+:root {
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes dashboard-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes response-enter {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(16 185 129 / 0);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgb(16 185 129 / 0.16);
+  }
+}
+
+.dashboard-header {
+  animation: dashboard-enter 600ms var(--motion-ease) both;
+}
+
+.dashboard-main {
+  animation: dashboard-enter 700ms 80ms var(--motion-ease) both;
+}
+
+.dashboard-panel {
+  transition:
+    border-color 220ms ease,
+    background-color 220ms ease,
+    box-shadow 220ms ease;
+  animation: panel-enter 700ms var(--motion-ease) both;
+}
+
+.dashboard-panel:hover {
+  border-color: rgb(51 65 85);
+  box-shadow: 0 16px 40px rgb(2 6 23 / 0.16);
+}
+
+.dashboard-panel--response {
+  animation-delay: 100ms;
+}
+
+.control {
+  transition:
+    transform 180ms var(--motion-ease),
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.control:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.control:active:not(:disabled) {
+  transform: translateY(1px) scale(0.98);
+}
+
+.json-editor {
+  transition:
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.json-editor:focus {
+  box-shadow: 0 0 0 3px rgb(56 189 248 / 0.1);
+}
+
+.status-dot {
+  animation: status-pulse 2.2s ease-in-out infinite;
+}
+
+.response-content,
+.notice,
+.empty-state {
+  animation: response-enter 500ms var(--motion-ease) both;
+}
+
+.notice--error {
+  animation-name: dashboard-enter;
+}
+
+.stat-card {
+  transition:
+    transform 220ms var(--motion-ease),
+    border-color 220ms ease;
+  animation: dashboard-enter 450ms var(--motion-ease) both;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgb(56 189 248 / 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
